@@ -1,5 +1,6 @@
 package com.star_wormwood.ton_clicker
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +15,8 @@ import com.star_wormwood.ton_clicker.databinding.ActivityMainBinding
 
 object Managers {
     lateinit var fragmentManager: FragmentNavigationManager
-    val userManager = UserManager()
+    lateinit var userManager: UserManager
+
 }
 object Fragments {
     val miningScreen = MiningScreenFragment()
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Managers.userManager = UserManager(getSharedPreferences("User", Context.MODE_PRIVATE))
         val mapFragments: MutableMap<Int, Fragment> = mutableMapOf(
             R.id.mining to Fragments.miningScreen,
             R.id.shop to Fragments.shopScreen,

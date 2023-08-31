@@ -67,7 +67,14 @@ class MiningScreenFragment : Fragment() {
 
         return binding.root
     }
+    @SuppressLint("SetTextI18n")
     fun updateScreen() {
-        binding.tonValue.text = String.format("%.06f", Managers.userManager.ton)
+        if (Managers.userManager.ton == 0f) {
+            binding.tonValue.text = "TON: " + "0"
+        } else {
+            binding.tonValue.text = "TON: " + String.format("%.06f", Managers.userManager.ton)
+        }
+
+
     }
 }
