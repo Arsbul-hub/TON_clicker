@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.star_wormwood.ton_clicker.Fragments
 import com.star_wormwood.ton_clicker.Managers
+import com.star_wormwood.ton_clicker.common.Managers.GameData
+import com.star_wormwood.ton_clicker.common.Managers.UserManager
 import com.star_wormwood.ton_clicker.databinding.FragmentMiningScreenBinding
 
 
@@ -27,8 +31,15 @@ class MiningScreenFragment : Fragment() {
     ): View {
 
         _binding = FragmentMiningScreenBinding.inflate(inflater, container, false)
+//
+        Managers.userManager.onUpdateListener  = {
 
-        updateScreen()
+            requireActivity().runOnUiThread {
+                updateScreen()
+
+            }
+
+        }
 
         binding.mineButton.setOnTouchListener { v, event ->
             when (event?.action) {
@@ -45,9 +56,9 @@ class MiningScreenFragment : Fragment() {
 
 
 
-
-                    Managers.userManager.mine()
                     updateScreen()
+                    Managers.userManager.mine()
+
                 }
 
                 MotionEvent.ACTION_UP -> {
@@ -69,12 +80,13 @@ class MiningScreenFragment : Fragment() {
     }
     @SuppressLint("SetTextI18n")
     fun updateScreen() {
-        if (Managers.userManager.ton == 0f) {
+        if (GameData.ton == 0f) {
             binding.tonValue.text = "TON: " + "0"
         } else {
-            binding.tonValue.text = "TON: " + String.format("%.06f", Managers.userManager.ton)
-        }
 
+            binding.tonValue.text = "TON: " + String.format("%.06f", GameData.ton)
+        }
+        binding.energy.progress = Managers.userManager.getGameData().energy
 
     }
 }
